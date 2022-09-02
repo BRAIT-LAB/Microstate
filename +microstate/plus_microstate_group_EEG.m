@@ -20,7 +20,7 @@ end
 % 
 % or, for more info: 
 % 
-[coh,optimum_k,k_values,maps_all_k,gev_all_k] = coh.cluster_globalkoptimum('kmin',5,'kmax',9); 
+[coh,optimum_k,k_values,maps_all_k,gev_all_k] = coh.cluster_globalkoptimum('kmin',2,'kmax',20); 
 
 %% 分析可视化微状态数据
 % Call layout creator from the command line     从命令行调用布局创建器
