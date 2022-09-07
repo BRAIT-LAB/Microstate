@@ -29,7 +29,7 @@ load('G:\SEED_ICA\prepro_pipeline2\5_band\xyl1\gamma\duration.mat')
 load('G:\SEED_ICA\prepro_pipeline2\5_band\xyl1\gamma\occurence.mat')
 load('G:\SEED_ICA\prepro_pipeline2\5_band\xyl1\gamma\TP_all.mat')
 data_gamma = feature_fusion(coverage, duration, occurence, TP_all);
-%% 数据整合
+%% 
 data = [data_delta, data_theta, data_alpha, data_beta, data_gamma];
 % data = data_alpha;
 [data_sta, ps] = mapminmax(data',-1,1);
@@ -42,12 +42,10 @@ label(i+215,:) = 2;
 label(i+215*2,:) = 3;
 end
 data = data(:,any(data));
-%% 整体数据分成训练集和测试集
-indices     = crossvalind('Kfold', max(size(data,1)), 10);%将数据样本随机分割为10部分，将数据集划分为10个大小相同的互斥子集
-%K折交叉验证：每次将其中一个包作为测试集，剩下k-1个包作为训练集进行训练。
-%计算k次求得的分类率的平均值，作为该模型或者假设函数的真实分类率。
-%unidrnd是离散均匀随机数
-%             randIndex   =unidrnd(10);%循环5次，分别取出第i（i取1.2.3.4.5中的任意一个）部分作为测试样本，其余4部分作为训练样本。
+%% 
+indices     = crossvalind('Kfold', max(size(data,1)), 10);
+%unidrnd
+%             randIndex   =unidrnd(10);
 svmpredictlable = cell(10,1);
 knnpredictlabel = cell(10,1);
 accuracy_svm = zeros(10,3);
@@ -55,12 +53,12 @@ accuracy_knn = zeros(10,1);
 accuracy_rf = zeros(10,1);
 for i = 1:1:10
 test        = (indices == i);
-train       = ~test;%1：表示该组数据被选中，0：未被选中
+train       = ~test;
 traindata   = data(train, :);
 testdata    = data(test, :);
-train_label = label(train,:);%label数组存放情感的三种分类情况
+train_label = label(train,:);
 test_label  =label(test,:);
-% %% 特征选择
+% %% 
 % [ranks,weights] = relieff(traindata,train_label,3,'method','classification');
 % index = find(weights>0.06);
 % traindata = traindata(:,index);
@@ -73,8 +71,8 @@ newtrainY(:,:)=train_label(perm1,:);
 perm2=randperm(length(testdata(:,1)));
 newtestX(:,:)=testdata(perm2,:);
 newtestY(:,:)=test_label(perm2,:);
-% %% 支持向量机测试
-% %参数寻优
+% %% 
+% %
 % %     bestcv = 0;
 % %     for log2c = -4:12
 % %         for log2g = -8:4
@@ -90,7 +88,7 @@ newtestY(:,:)=test_label(perm2,:);
 % [svmpredict_label, accuracys, ~] = svmpredict(newtestY, newtestX, model);
 % accuracy_svm(i,:) = accuracys;
 % svmpredictlable{i,1} = svmpredict_label;
-    %% KNN测试
+    %% KNN
 [knnpredict_label] = KNN(newtrainX,newtrainY,newtestX, 3);
 [corrPredictions, accuracyk] =  Misclassification_accuracy(newtestY, knnpredict_label);
 accuracy_knn(i,:) = accuracyk;
