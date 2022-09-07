@@ -13,7 +13,7 @@ EEG = pop_loadset('filename',EEGFiles(i).name,'filepath',EEGdir);
 [ALLEEG, EEG, CURRENTSET] = eeg_store( ALLEEG, EEG, 0 );
 eeglab redraw % updates EEGLAB datasets
 end
-%% 3.3.2 Select data for microstate analysis  计算GFP
+%% 3.3.2 Select data for microstate analysis  
 [EEG, ALLEEG] = pop_micro_selectdata( EEG, ALLEEG, 'datatype', 'spontaneous',...
 'avgref', 1, ...
 'normalise', 1, ...
@@ -24,11 +24,11 @@ end
 % store data in a new EEG structure
 [ALLEEG EEG] = eeg_store(ALLEEG, EEG, CURRENTSET);
 eeglab redraw % updates EEGLAB datasets
-%% 3.4 Microstate segmentation  对GFP进行聚类
+%% 3.4 Microstate segmentation 
 % select the "GFPpeak" dataset and make it the active set
 [ALLEEG EEG CURRENTSET] = pop_newset(ALLEEG, EEG, 15,'retrieve',16,'study',0);
 eeglab redraw
-% Perform the microstate segmentation 执行微状态分割 
+% Perform the microstate segmentation 
 EEG = pop_micro_segment( EEG, 'algorithm', 'modkmeans', ...
 'sorting', 'Global explained variance', ...
 'Nmicrostates', 2:8, ...
@@ -47,7 +47,6 @@ figure;MicroPlotTopo( EEG, 'plot_range', [] );
 EEG = pop_micro_selectNmicro(EEG);
 [ALLEEG EEG] = eeg_store(ALLEEG, EEG, CURRENTSET);
 %% Import microstate prototypes from other dataset to the datasets that should be back-fitted
-% 将其他数据集的微状态原型导入到需要进行回配的数据集  
 % note that dataset number 5 is the GFPpeaks dataset with the microstate
 % prototypes
 occurence = cell(15,1);
@@ -82,7 +81,7 @@ for i = 1:length(EEGFiles)
     TP = EEG.microstate.stats.TP;
     GEVall(i,:) = EEG.microstate.stats.GEV;
     
-    TP_all{i,1} = TP; % 按列排序
+    TP_all{i,1} = TP;
 %     data{i,1} = [occurence, duration, coverage];
     fit{i,1} = fitlabels;
 end
