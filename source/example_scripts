@@ -1,20 +1,20 @@
-%% Example scripts for aligning individual sourcemodels to the atlas 将单个源模型与图集对齐的示例脚本
+%% Example scripts for aligning individual sourcemodels to the atlas 
 clear, clc, close all
 
-% Make sure fieldtrip is on the path    确保fieldtrip在路径上
+% Make sure fieldtrip is on the path    
 addpath(genpath('E:\matlab2021\toolbox\fieldtrip-master\'));
 ft_defaults ; 
 
-% Make sure the codes and atlas are on the path 确定代码和地图在路径上
+% Make sure the codes and atlas are on the path 
 addpath ..
 
-% Load the atlas    读取地图
+% Load the atlas   
 atlas = load('G:\+microstate\+microstate_source\evaluate_inverse_methods-master\reduced_atlas\HCP230.mat') ; 
 
 %  
 %    ftp://ftp.fieldtriptoolbox.org/pub/fieldtrip/tutorial/Subject01.zip
 % You need to unzip this file and ensure that Subject01.mri is in this 
-% directory. 您需要解压缩这个文件，并确保Subject01.Mri在这个目录中
+% directory. 
 % 
 % Below we slightly preprocess the MRI data, and then use it to create a
 % Fieldtrip headmodel structure (vol), generated from the MRI using the
@@ -22,11 +22,11 @@ atlas = load('G:\+microstate\+microstate_source\evaluate_inverse_methods-master\
 % tutorial (http://www.fieldtriptoolbox.org/tutorial/headmodel_eeg_bem/). 
 
 
-% Load mri  导入.mri格式数据
+% Load mri  
 mri = ft_read_mri('Subject01.mri') ; 
 
 % Process mri   
-mri = ft_convert_coordsys(mri,'acpc') ; % conver to acpc coordinates    转换为acpc坐标
+mri = ft_convert_coordsys(mri,'acpc') ; % conver to acpc coordinates    
 cfg = struct ; 
 cfg.resolution = 1 ; 
 mri = ft_volumereslice(cfg,mri) ; % reslice to 1mm
@@ -52,13 +52,11 @@ vol = ft_prepare_headmodel(cfg,seg) ;
 % By default, the function does the following: 
 % 1) Reslices the atlas to 4mm resolution, and creates a 3d regular grid in
 %    template space based on voxels with a lael in the atlas
-% 将图集重新切片到4mm分辨率，并基于图集中带有lael的体素在模板空间中创建一个3d规则网格
-
 % 2) Nonlinear warps individual MRI onto template MRI
 % 3) Applies inverse warp to grid to map template grid to individual space
 
 sourcemodel_defaults = align_individual2atlas(mri) ; 
-% This is equivalent to: 这相当于:
+% This is equivalent to: 
 % sourcemodel_defaults = align_individual2atlas([],mri,atlas) ; 
 
 % plot
